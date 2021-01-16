@@ -23,6 +23,22 @@ struct Person {
 impl FromStr for Person {
     type Err = String;
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+        if s.is_empty() {
+            Err(String::from("err"))
+        } else {
+            let v = s.split(",").collect::<Vec<&str>>();
+            if v.len() < 2 || v[0].is_empty() {
+                Err(String::from("err"))
+            } else {
+                match v[1].parse::<usize>() {
+                    Ok(age) => Ok(Person {
+                        name: String::from(v[0]),
+                        age,
+                    }),
+                    Err(e) => Err(String::from("err")),
+                }
+            }
+        }
     }
 }
 
